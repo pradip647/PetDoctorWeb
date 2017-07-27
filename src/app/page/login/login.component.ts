@@ -27,9 +27,9 @@ export class LoginComponent {
 			}else{
 			firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((authenticatedUser) => {
 				console.log("success");
-				this.router.navigate(['/home']);
-				this.success="true";
-				localStorage.setItem("success",this.success)
+				//this.router.navigate(['/home']);
+			//	this.success="true";
+			//	localStorage.setItem("success",this.success)
 			}).catch((error)=>{
 				console.log(error);
 								if(error.message =="The email address is badly formatted."){

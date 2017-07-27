@@ -12,11 +12,13 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cdk": "github:angular/cdk-builds",
     "@angular/common": "^2.4.0",
     "@angular/compiler": "^2.4.0",
     "@angular/core": "^2.4.0",
     "@angular/forms": "^2.4.0",
     "@angular/http": "^2.4.0",
+    "@angular/material": "github:angular/material2-builds",
     "@angular/platform-browser": "^2.4.0",
     "@angular/platform-browser-dynamic": "^2.4.0",
     "@angular/router": "^3.4.0",

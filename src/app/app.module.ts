@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 import { HomeComponent } from './page/home/home.component';
 import { LoginComponent } from './page/login/login.component';
 import { SignupComponent } from './page/signup/signup.component';
+import { ScheduleComponent } from './page/schedule/schedule.component';
 
 
 
@@ -15,6 +16,7 @@ import { SignupComponent } from './page/signup/signup.component';
 import { LoginModule } from './page/login/login.module';
 import { HomeModule } from './page/home/home.module';
 import { SignupModule } from './page/signup/signup.module';
+import { ScheduleModule } from './page/schedule/schedule.module';
 
 
 import { AppComponent } from './app.component';
@@ -41,6 +43,7 @@ import * as firebase from 'firebase';
     HomeComponent,
     LoginComponent,
     SignupComponent,
+    ScheduleComponent,
   
   ],
   imports: [
@@ -51,6 +54,7 @@ import * as firebase from 'firebase';
     LoginModule,
     HomeModule,
     SignupModule,
+    ScheduleModule,
    
   
   ],
