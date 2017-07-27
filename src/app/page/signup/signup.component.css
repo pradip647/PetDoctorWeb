@@ -1,0 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-decoration: none;
+  outline: none;
+}
+
+a {
+  font-family: calibri;
+  font-size: 14px;
+  font-weight: normal;
+  color: #3B424D;
+}
+.main-wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url('assets/images/backgroundImg.png') no-repeat center center;
+  background-size: cover;
+}
+.login-main {
+  width: 300px;
+  height: 43vh;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ff7e68;
+  padding: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  border-radius: 10px;
+}
+.login-main p {
+  text-indent: 10px;
+}
+.box1 {
+  background: #ffd5ce;
+  height: 40px;
+  text-indent: 10px;
+  width: 100%;
+  margin-bottom: 2px;
+  color: #3B424D;
+  font-size: 15px;
+  font-weight: 400;
+}
+.border1 {
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  -ms-border-radius: 5px 5px 0 0;
+  -o-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+}
+.border2 {
+  -webkit-border-radius: 0px 0 5px 5px;
+  -moz-border-radius: 0px 0 5px 5px;
+  -ms-border-radius: 0px 0 5px 5px;
+  -o-border-radius: 0px 0 5px 5px;
+  border-radius: 0px 0 5px 5px;
+}
+
+.logo{
+    margin-left:24.5%;
+    margin-top:36px;
+}
+
+.regtext{
+    text-align: center;
+    font-size: 27px;
+    margin-bottom: 4px;
+}
+
+
+.regbtn{
+    width: auto;
+    padding:10px 20px 10px 20px;
+    margin: 8px auto;
+    display: block;
+    background: #FF5335;
+    color:#fff;
+    font-size: 18px;
+    border-radius:8px;
+    border: none;
+    transition: 0.4s ease-in-out;
+}
+.regtext{
+    text-align: center;
+    font-size: 27px;
+    margin-bottom: 4px;
+    color:#fff;
+    text-transform:uppercase;
+}
+.regbtn:hover{
+    font-size:18px;
+    color:#FF5335;
+    background:#fff;
+    border:none;   
+}
+.signfacebook:activated, .signfacebook:focus, .signfacebook:active{
+    color:#fff;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(360deg);
+  }
+}
+@-o-keyframes spin {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(360deg);
+  }
+}

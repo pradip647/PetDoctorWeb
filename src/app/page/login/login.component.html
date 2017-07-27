@@ -1,0 +1,13 @@
+<div class="container-fluid">
+    <div class="main-wrap">
+        <div class="logo"> <img src="assets/images/BookYourVetLogo.png" class="logo img-responsive"></div>
+        <div class="login-main">
+            <p class="regtext">Login</p>
+            <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="email" placeholder="Email" class="box1 border1">
+            <input type="password" [ngModelOptions]="{standalone: true}" [(ngModel)]="password" placeholder="Password" class="box1 border2">
+            <input type="submit" class="send" value="Login" (click)="goLogin()">
+             <p class="regnew">Need An Account? <a routerLink="/signup">click here</a></p> 
+        </div>
+        
+    </div>
+</div>
