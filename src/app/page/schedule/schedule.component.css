@@ -4,6 +4,8 @@
 .navbar-brand{
     height: 70px;
 }
+.heading{text-align:center}
+.heading1{text-align:center;background-color:aquamarine}
 .logo{width:100px}
 @media (min-width: 768px){
     .navbar-nav>li>a {

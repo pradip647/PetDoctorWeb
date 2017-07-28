@@ -5,6 +5,7 @@
     height: 70px;
 }
 .logo{width:100px}
+.heading{text-align:center;}
 @media (min-width: 768px){
     .navbar-nav>li>a {
         padding-top: 25px;

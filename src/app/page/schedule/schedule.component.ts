@@ -1,5 +1,5 @@
 import { Component,NgZone } from '@angular/core';
-import {Router} from '@angular/router';
+import {Router,ActivatedRoute, Params, Data} from '@angular/router';
 
 import * as firebase from 'firebase';
 
@@ -21,13 +21,28 @@ userId:any;
 allSchedule:any;
 reff:any;
 appointments:any;
-
-
-
-constructor(private router: Router, public zone:NgZone){
-	this.appointments=[];
+doctorname:any;
+gdata:any;
+date:any;
+purposeofvisit:any;
+sickness:any;
+treatment:any;
+petuserid:any;
+petid:any;
+treatmentlist:any;
+treatmentslist:any;
+status:any;
+button:any;
+constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
+	this.petuserid=this.route.snapshot.params['petuserid'] ;
+	this.petid=this.route.snapshot.params['petid'] ;
+	if(this.status!="" || this.status!= undefined){
+     this.status=this.route.snapshot.params['status'] ; 
+	}
+	
+	
+    this.appointments=[];
 	this.reff = firebase.database().ref('Appointment/');
-
 	firebase.auth().onAuthStateChanged((user) => {
 		if(user){
 			this.userId = user.uid;
@@ -36,70 +51,22 @@ constructor(private router: Router, public zone:NgZone){
 		}
 	});	
 
-/*	this.appo=[];
-	//if(localStorage.getItem("success")!="true"){this.router.navigate(['./login']);}
-	firebase.auth().onAuthStateChanged((user) => {
-	if(user){
-		this.userId = user.uid;
-	}
-	});		
-	//var users = firebase.auth().currentUser.uid;
-	var ref = firebase.database().ref('/users/' + this.userId);
-	 ref.on('value', (snapshot:any) => {        
-		if(snapshot.val()){
-			this.myappo=snapshot.val().myAppointment
-			console.log(this.myappo);
-			var reff = firebase.database().ref('Appointment/');
-			reff.on('value', (snapshot:any) => {        
-				if(snapshot.val()){
-				let appointmentlist=snapshot.val();
-				for (var key in appointmentlist) 
-				{ 
-					appointmentlist[key].uid=key;
-					
-					for(var i=0 ; i<=this.myappo.length;i++){
-						if(this.myappo[i]==appointmentlist[key].uid){
-							this.appo.push(appointmentlist[key]);
-						}
-					}
-					
-				}
-				console.log(this.appo);
-				}
-			});
-			
-		}
-	});
-*/
 }
 
-
-  //loadData
   loadData(){
+	  this.treatmentslist=[];
 	let ref = firebase.database().ref('/users/' + this.userId);
 	 ref.on('value', (snapshot:any) => {      
 		if(snapshot.val()){
-		   if(snapshot.val().myAppointment){
-				this.allSchedule = snapshot.val().myAppointment;	//user appointment lists
-				this.reff.once('value', (snap1:any) => {
-				   if(snap1.val()){
-					   let appointmentlist=snap1.val();	    //all appointments from appointment
-					   this.appointments=[];
-					   for(let key in appointmentlist){
-						   appointmentlist[key].uid=key;
-						   for(let i=0 ; i<=this.allSchedule.length;i++){
-								if(this.allSchedule[i] == key){
-									this.zone.run(()=>{
-									   this.appointments.push(appointmentlist[key]);
-									})
-								}
-						   }
-					   }
-					 //  console.log(this.appointments);
-				   }
-
-				});
-		   }
+			this.doctorname=snapshot.val().name;
+			this.treatmentslist=[];
+			this.doctorname=snapshot.val().Name;
+			this.treatmentlist=snapshot.val().treatment;
+			for(let key in this.treatmentlist){
+			  this.treatmentlist[key].uid=key;
+			  this.treatmentslist.push(this.treatmentlist[key]);
+			}
+			console.log(this.treatmentslist);	
 		}
 	 });
 
@@ -109,15 +76,45 @@ clickme(i){
 	alert(i);
 }
 
+addTreatment(){
+	let petData = {
+		pet_treatment_date:this.date,
+		visitreason:this.purposeofvisit,
+		pet_problem:this.sickness,
+		pet_treatment:this.treatment,
+		doctor_id:this.userId
+	}
+	let petDatafordoctor = {
+		pet_treatment_date:this.date,
+		visitreason:this.purposeofvisit,
+		pet_problem:this.sickness,
+		pet_treatment:this.treatment,
+		pet_id:this.petid,
+		pet_user:this.petuserid
+	}
+	let status="done";
+firebase.database().ref('pets/' + this.petuserid+ '/' + this.petid +'/pastconsultancy/').push(petData);
+
+firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
+
+let fRef = firebase.database().ref('appointment/' + this.petuserid);
+fRef.update({
+        status:status
+     });
+alert("Treatment added Successfully");
+this.button ="false";
+this.date="";
+this.purposeofvisit="";
+this.sickness="";
+this.treatment="";
+
+}
+
+
 
 
 logout(){
-//	this.fireAuth = firebase.auth();
- // var ref= firebase.database().ref('users');
-    //  this.fireAuth.signOut();
-	  firebase.auth().signOut();
-	 // this.router.navigate(['./login']);
-	//  localStorage.removeItem("success");
+ firebase.auth().signOut();
 }
 
 
