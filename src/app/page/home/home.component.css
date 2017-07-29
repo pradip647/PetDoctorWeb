@@ -4,6 +4,7 @@
 .navbar-brand{
     height: 70px;
 }
+.heading1{text-align:center;background-color:aliceblue;font-size:17px;}
 .logo{width:100px}
 .heading{text-align:center;}
 @media (min-width: 768px){

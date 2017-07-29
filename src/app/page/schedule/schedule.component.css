@@ -5,7 +5,7 @@
     height: 70px;
 }
 .heading{text-align:center}
-.heading1{text-align:center;background-color:aquamarine}
+.heading1{text-align:center;background-color:aliceblue;font-size:17px;}
 .logo{width:100px}
 @media (min-width: 768px){
     .navbar-nav>li>a {
