@@ -25,35 +25,53 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-4">
+    <select class="form-control" id="sel1" (change)="onItemChange()" [(ngModel)]="category">
+      <option value="" disabled selected style="display: none;">Choose Search Catagory</option>
+      <option *ngFor=" let value of filterItem" value="{{value.id}}">{{value.name}}</option>
+    </select>
+  </div>
+    <div class="col-md-4">
+      <div class="form-group">
+      <input type="text" id="con" (keyup)="dateby()" placeholder="Search for Date.." class="choose form-control" style="display:none">
+      <input type="text" id="cit" (keyup)="clName()" placeholder="Search for Client Name.." class="choose form-control" style="display:none">
+      <input type="text" id="pet" (keyup)="petName()" placeholder="Search for Client Pet Name.." class="choose form-control" style="display:none">
+      <input type="text" id="age" (keyup)="species()" placeholder="Search for Species.." class="choose form-control" style="display:none">
+      <input type="text" id="ser" (keyup)="problem()" placeholder="Search for Problem.." class="choose form-control" style="display:none">
+      </div>
+  </div>
+  <div class="col-md-2">
+  </div>
+</div>
 
 <div class="panel panel-default">
-<table class="table">
-  <thead class="thead-inverse">
-    <tr>
-      <th class="heading1" colspan="8">My Appointment</th>
-    </tr>
-    <tr>
-      <th>No</th>
-      <th>Date Time</th>
-      <th>Client Name</th>
-      <th>Species</th>
-      <th>Problem</th>
-      <th>Contact No</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor= "let user of appointments; let i = index;">
-      <td>{{i+1}}</td>
-      <td>{{user.date+","+ user.time}}</td>
-      <td>{{user.username}}</td>
-      <td>{{user.species}}</td>
-      <td>{{user.additionalComments}}</td>
-      <td>{{user.phoneNo}}</td>
-      <td><button type="button" class="btn btn-danger" (click)="teatment(i)">{{user.status ? "Treatment Done" : "Treatment" }}</button></td>
-    </tr>
-  </tbody>
-</table>
-
+    <table id="myTable">
+      <tr>
+          <th class="heading1" colspan="8">My Appointment</th>
+        </tr>
+      <tr class="header">
+          <th>No</th>
+          <th>Date Time</th>
+          <th>Client Name</th>
+          <th>Pet Name</th>
+          <th>Species</th>
+          <th>Problem</th>
+          <th>Contact No</th>
+          <th>Action</th>
+      </tr>
+      <tr *ngFor= "let user of appointments; let i = index;">
+          <td>{{i+1}}</td>
+          <td>{{user.date+","+ user.time}}</td>
+          <td>{{user.username}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.species}}</td>
+          <td>{{user.additionalComments}}</td>
+          <td>{{user.phoneNo}}</td>
+          <td><button  class="{{user.status ? 'btn btn-success' : 'btn btn-danger'}}" (click)="teatment(i)">{{user.status ? "Treatment Done" : "Treatment" }}</button></td>
+        </tr>
+    </table>
 </div>
 

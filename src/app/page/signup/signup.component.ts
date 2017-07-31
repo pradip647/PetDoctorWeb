@@ -33,13 +33,14 @@ export class SignupComponent {
 			  if(this.password == this.confirmpassword){
 					firebase.auth().createUserWithEmailAndPassword(this.email,this.password).then((newUser)=>{
 						firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((authenticatedUser) => {
-											authenticatedUser.sendEmailVerification().then(function() {
+											/*authenticatedUser.sendEmailVerification().then(function() {
 												alert("Verification Email Sent to your email.. please verify your email...");
-											}, function(error) {});
+											}, function(error) {});*/
 
 											this.ref.child(authenticatedUser.uid).update({
-												Name:this.name,
+												name:this.name,
 												email:this.email,
+												type:"Doctor"
 												
 											})
 										});
