@@ -33,12 +33,23 @@ treatmentlist:any;
 treatmentslist:any;
 status:any;
 button:any;
+
+appointment_userId:any;  		//new added
+d_uid:any;
+petname:any;
+
 constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
 	this.petuserid=this.route.snapshot.params['petuserid'] ;
+	//new added
+	this.appointment_userId = this.route.snapshot.params['appointment_userId'];
+	this.petname = this.route.snapshot.params['petname'];
+	this.d_uid = this.route.snapshot.params['d_uid'];
+	//end
 	this.petid=this.route.snapshot.params['petid'] ;
 	if(this.status!="" || this.status!= undefined){
      this.status=this.route.snapshot.params['status'] ; 
 	}
+	
 	
 	
     this.appointments=[];
@@ -77,36 +88,69 @@ clickme(i){
 }
 
 addTreatment(){
-	let petData = {
-		pet_treatment_date:this.date,
-		visitreason:this.purposeofvisit,
-		pet_problem:this.sickness,
-		pet_treatment:this.treatment,
-		doctor_id:this.userId
-	}
-	let petDatafordoctor = {
-		pet_treatment_date:this.date,
-		visitreason:this.purposeofvisit,
-		pet_problem:this.sickness,
-		pet_treatment:this.treatment,
-		pet_id:this.petid,
-		pet_user:this.petuserid
-	}
-	let status="done";
-firebase.database().ref('pets/' + this.petuserid+ '/' + this.petid +'/pastconsultancy/').push(petData);
+			let petData = {
+				pet_treatment_date:this.date,
+				visitreason:this.purposeofvisit,
+				pet_problem:this.sickness,
+				pet_treatment:this.treatment,
+				doctor_id:this.userId,
+				appointment_userId:this.appointment_userId,
+			}
+			let petDatafordoctor = {
+				pet_treatment_date:this.date,
+				visitreason:this.purposeofvisit,
+				pet_problem:this.sickness,
+				pet_treatment:this.treatment,
+			//	pet_id:this.petid,
+				//pet_user:this.petuserid
+				appointment_userId:this.appointment_userId,
+				petname:this.petname,
+				mypetId:this.d_uid
+			}
+			let status="done";
 
-firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
+			firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
 
-let fRef = firebase.database().ref('appointment/' + this.petuserid);
-fRef.update({
-        status:status
-     });
-alert("Treatment added Successfully");
-this.button ="false";
-this.date="";
-this.purposeofvisit="";
-this.sickness="";
-this.treatment="";
+			let pRef = firebase.database().ref('pets');
+			pRef.once('value',(snapData:any)=>{
+				if(snapData.val()){
+					let alldata = snapData.val();
+					for(let i=0; i<alldata.length; i++){
+						if(alldata[i].name == this.petname && alldata[i].userId == this.appointment_userId){
+							firebase.database().ref('pets/' + i + '/treatment/').push(petData)
+							break;
+						}
+					}
+				}
+			})
+
+			let uRef = firebase.database().ref('users/' + this.appointment_userId + '/pets/');
+			uRef.once('value',(snapU:any)=>{
+				if(snapU.val()){
+					let sData = snapU.val();
+					for(let j=0; j<sData.length; j++){
+						if(sData[j].name == this.petname){
+							firebase.database().ref('users/' + this.appointment_userId + '/pets/' + j + '/treatment/').push(petData)
+						}
+					}
+				}
+			})
+
+
+	//	firebase.database().ref('pets/' + this.petuserid+ '/' + this.petid +'/pastconsultancy/').push(petData);
+
+	//	firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
+
+	//	let fRef = firebase.database().ref('appointment/' + this.petuserid);
+	//	fRef.update({
+	//			status:status
+	//		});
+	//	alert("Treatment added Successfully");
+		this.button ="false";
+		this.date="";
+		this.purposeofvisit="";
+		this.sickness="";
+		this.treatment="";
 
 }
 

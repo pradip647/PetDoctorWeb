@@ -40,7 +40,7 @@ export class SignupComponent {
 											this.ref.child(authenticatedUser.uid).update({
 												name:this.name,
 												email:this.email,
-												type:"Doctor"
+												type:"doctor"
 												
 											})
 										});
