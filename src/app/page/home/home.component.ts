@@ -1,5 +1,5 @@
 import { Component,NgZone} from '@angular/core';
-import {Router} from '@angular/router';
+import {Router,ActivatedRoute, Params, Data} from '@angular/router';
 import * as firebase from 'firebase';
 
 
@@ -21,7 +21,9 @@ data:any;
 status:any;
 treatmentstatus:boolean;
 filterItem:any;
-constructor(private router: Router, public zone:NgZone){
+loginstatus:any;
+type:any;
+constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
 	console.log("home working...")
 	this.appointments=[];
 	this.reff = firebase.database().ref('appointment/');
@@ -31,7 +33,10 @@ constructor(private router: Router, public zone:NgZone){
 			this.userId = user.uid;
 			console.log(this.userId);
 			this.loadData();
-		}
+    }
+    else{
+      this.router.navigate(['/login']);
+    }
 	});	
 
 	this.filterItem=[
@@ -111,6 +116,7 @@ loadData(){
 		if(snapshot.val()){
       this.zone.run(()=>{
         this.doctorname=snapshot.val().name;
+        this.type=snapshot.val().type
         this.status=snapshot.val().status;
       })
 
@@ -122,7 +128,6 @@ loadData(){
         }
         console.log(this.appointments)
       }
-      
 
 	/*	   if(snapshot.val().myAppointment){
 				this.allSchedule = snapshot.val().myAppointment;

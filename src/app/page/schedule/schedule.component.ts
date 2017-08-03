@@ -60,6 +60,9 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 			console.log(this.userId);
 			this.loadData();
 		}
+		else{
+			this.router.navigate(['/login']);
+		}
 	});	
 
 }
