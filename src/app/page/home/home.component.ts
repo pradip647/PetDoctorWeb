@@ -24,14 +24,14 @@ filterItem:any;
 loginstatus:any;
 type:any;
 constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
-	console.log("home working...")
+	//console.log("home working...")
 	this.appointments=[];
 	this.reff = firebase.database().ref('appointment/');
 
 	firebase.auth().onAuthStateChanged((user) => {
 		if(user){
 			this.userId = user.uid;
-			console.log(this.userId);
+			//console.log(this.userId);
 			this.loadData();
     }
     else{
@@ -66,7 +66,7 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 category:any='';
 anything:any;
  onItemChange(){
-      console.log(this.category); //Here I want the changed value
+     // console.log(this.category); //Here I want the changed value
   if(this.category=='1'){
   document.getElementById("con").style.display='block';
   document.getElementById("cit").style.display='none';
@@ -112,12 +112,13 @@ anything:any;
 
 loadData(){
 	let ref = firebase.database().ref('/users/' + this.userId);
-	 ref.on('value', (snapshot:any) => {      
+	 ref.on('value', (snapshot:any) => { 
+       this.appointments = [];   
 		if(snapshot.val()){
       this.zone.run(()=>{
         this.doctorname=snapshot.val().name;
-        this.type=snapshot.val().type
-        this.status=snapshot.val().status;
+        this.type=snapshot.val().type;
+        //this.status=snapshot.val().status;
         
       })
 
@@ -127,7 +128,7 @@ loadData(){
           this.allSchedule[key].uid = key;
           this.appointments.push(this.allSchedule[key]);
         }
-        console.log(this.appointments)
+        //console.log(this.appointments)
       }
 
 	/*	   if(snapshot.val().myAppointment){
@@ -163,7 +164,7 @@ loadData(){
 
 teatment(index){
 	let x =this.appointments[index];
-  console.log(x);
+  //console.log(x);
 //appointment_userId
   //name
   //uid
@@ -173,7 +174,8 @@ teatment(index){
 	}
 	else{
   //this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid}]);
-  this.router.navigate(['/schedule',{appointment_userId:x.appointment_userId,petname:x.name, d_uid:x.uid}]);
+  this.router.navigate(['/schedule',{appointment_userId:x.appointment_userId,petname:x.name, d_uid:x.uid ,acomments:x.additionalComments}]);
+  //localStorage.setItem("additionalcomments",x.additionalComments);
 	}
 
 }

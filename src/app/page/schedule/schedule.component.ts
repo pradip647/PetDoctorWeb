@@ -37,6 +37,7 @@ button:any;
 appointment_userId:any;  		//new added
 d_uid:any;
 petname:any;
+additionalcomments:any;
 
 constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
 	this.petuserid=this.route.snapshot.params['petuserid'] ;
@@ -44,6 +45,7 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 	this.appointment_userId = this.route.snapshot.params['appointment_userId'];
 	this.petname = this.route.snapshot.params['petname'];
 	this.d_uid = this.route.snapshot.params['d_uid'];
+	this.purposeofvisit = this.route.snapshot.params['acomments'];
 	//end
 	this.petid=this.route.snapshot.params['petid'] ;
 	if(this.status!="" || this.status!= undefined){
@@ -57,7 +59,7 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 	firebase.auth().onAuthStateChanged((user) => {
 		if(user){
 			this.userId = user.uid;
-			console.log(this.userId);
+		//	console.log(this.userId);
 			this.loadData();
 		}
 		else{
@@ -72,16 +74,21 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 	let ref = firebase.database().ref('/users/' + this.userId);
 	 ref.on('value', (snapshot:any) => {      
 		if(snapshot.val()){
+			this.zone.run(()=>{
 			this.doctorname=snapshot.val().name;
-			this.treatmentslist=[];
-			this.doctorname=snapshot.val().Name;
+			//console.log(this.doctorname);
+
+			this.treatmentslist=[];		
 			this.treatmentlist=snapshot.val().treatment;
 			for(let key in this.treatmentlist){
 			  this.treatmentlist[key].uid=key;
 			  this.treatmentslist.push(this.treatmentlist[key]);
 			}
-			console.log(this.treatmentslist);	
+			//console.log(this.treatmentslist);	
+		})
 		}
+		
+	
 	 });
 
   }
