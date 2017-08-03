@@ -44,7 +44,7 @@ export class LoginComponent {
 				if(snapshot.val().type == "user"){
 				this.router.navigate(['/login']);
 				firebase.auth().signOut();
-				alert("Only doctor can login here");
+				alert("You are not a Doctor");
 
 				}
 			else{

@@ -109,11 +109,17 @@ addTreatment(){
 				appointment_userId:this.appointment_userId,
 				petname:this.petname,
 				mypetId:this.d_uid
+				
 			}
 			let status="done";
 
 			firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
-
+		//add sm========================
+			let fRef = firebase.database().ref('/users/' + this.userId+ '/myAppointment/'+ this.d_uid);
+			fRef.update({
+			status:"done"
+			});
+		//end===========================
 			let pRef = firebase.database().ref('pets');
 			pRef.once('value',(snapData:any)=>{
 				if(snapData.val()){
@@ -148,7 +154,8 @@ addTreatment(){
 	//	fRef.update({
 	//			status:status
 	//		});
-	//	alert("Treatment added Successfully");
+
+		alert("Treatment Details added Successfully");
 		this.button ="false";
 		this.date="";
 		this.purposeofvisit="";

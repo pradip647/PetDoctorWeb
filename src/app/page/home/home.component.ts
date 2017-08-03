@@ -118,6 +118,7 @@ loadData(){
         this.doctorname=snapshot.val().name;
         this.type=snapshot.val().type
         this.status=snapshot.val().status;
+        
       })
 
       if(snapshot.val().myAppointment){
