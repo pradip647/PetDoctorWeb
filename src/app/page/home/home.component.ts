@@ -128,10 +128,11 @@ loadData(){
           this.allSchedule[key].uid = key;
           this.appointments.push(this.allSchedule[key]);
         }
-        //console.log(this.appointments)
+        // console.log(this.appointments)
       }
 
-	/*	   if(snapshot.val().myAppointment){
+  /*
+  	   if(snapshot.val().myAppointment){
 				this.allSchedule = snapshot.val().myAppointment;
 				this.reff.once('value', (snap1:any) => {
 				   if(snap1.val()){
@@ -153,7 +154,7 @@ loadData(){
 
 				});
        }
-         */
+    */
 
 		}
 	 });
@@ -164,13 +165,16 @@ loadData(){
 
 teatment(index){
 	let x =this.appointments[index];
-  //console.log(x);
+  console.log(x);
+
+
+
 //appointment_userId
   //name
   //uid
 	if(x.status){
    // this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid,status:x.status}]);
-    this.router.navigate(['/schedule',{status:x.status}]);
+    this.router.navigate(['/schedule',{status:x.status, appointment_userId:x.appointment_userId,petname:x.name, d_uid:x.uid ,acomments:x.additionalComments}]);
 	}
 	else{
   //this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid}]);

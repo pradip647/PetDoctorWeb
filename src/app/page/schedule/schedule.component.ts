@@ -33,19 +33,25 @@ treatmentlist:any;
 treatmentslist:any;
 status:any;
 button:any;
-
+a:any
+b:any;
 appointment_userId:any;  		//new added
 d_uid:any;
 petname:any;
 additionalcomments:any;
-
+petsname:any;
+petlist:any;
 constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
+this.treatmentslist=[];
+	
 	this.petuserid=this.route.snapshot.params['petuserid'] ;
 	//new added
 	this.appointment_userId = this.route.snapshot.params['appointment_userId'];
 	this.petname = this.route.snapshot.params['petname'];
+
 	this.d_uid = this.route.snapshot.params['d_uid'];
 	this.purposeofvisit = this.route.snapshot.params['acomments'];
+	
 	//end
 	this.petid=this.route.snapshot.params['petid'] ;
 	if(this.status!="" || this.status!= undefined){
@@ -59,7 +65,15 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 	firebase.auth().onAuthStateChanged((user) => {
 		if(user){
 			this.userId = user.uid;
-		//	console.log(this.userId);
+			let ref = firebase.database().ref('/users/' + this.userId);
+			ref.on('value', (snapshot:any) => {      
+				if(snapshot.val()){
+					this.zone.run(()=>{
+						this.doctorname = snapshot.val().name;
+					})
+					
+				}
+				});
 			this.loadData();
 		}
 		else{
@@ -69,28 +83,29 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 
 }
 
-  loadData(){
-	  this.treatmentslist=[];
-	let ref = firebase.database().ref('/users/' + this.userId);
-	 ref.on('value', (snapshot:any) => {      
+
+petde:any;
+loadData(){
+	this.treatmentslist=[];
+	var ref = firebase.database().ref('/users/' + this.appointment_userId + '/pets/');
+	ref.on('value',(snapshot:any)=>{
 		if(snapshot.val()){
-			this.zone.run(()=>{
-			this.doctorname=snapshot.val().name;
-			//console.log(this.doctorname);
+			this.treatmentslist=[];
+			let petsDetails = snapshot.val();
+			for(let i=0; i<petsDetails.length; i++){
+				if(petsDetails[i].name == this.petname){
+					this.petde = petsDetails[i].treatment;
+					for(let key in this.petde){
+						this.zone.run(()=>{
+							this.petde[key].uid=key;
+							this.treatmentslist.push(this.petde[key]);
+						})
 
-			this.treatmentslist=[];		
-			this.treatmentlist=snapshot.val().treatment;
-			for(let key in this.treatmentlist){
-			  this.treatmentlist[key].uid=key;
-			  this.treatmentslist.push(this.treatmentlist[key]);
+					}
+				}
 			}
-			//console.log(this.treatmentslist);	
-		})
 		}
-		
-	
-	 });
-
+	})
   }
 
 clickme(i){
@@ -104,6 +119,7 @@ addTreatment(){
 				pet_problem:this.sickness,
 				pet_treatment:this.treatment,
 				doctor_id:this.userId,
+				doctor_name:this.doctorname,
 				appointment_userId:this.appointment_userId,
 			}
 			let petDatafordoctor = {
