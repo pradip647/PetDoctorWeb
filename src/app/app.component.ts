@@ -11,8 +11,21 @@ export class AppComponent {
   title = 'app works!';
   constructor(private router: Router){
          firebase.auth().onAuthStateChanged((user) => {
-            if(user){
-              this.router.navigate(['/home']);
+            if(user){      
+              var useId = firebase.auth().currentUser.uid;
+                      var ref = firebase.database().ref('/users/' + useId)
+                      ref.on('value', (snapshot:any) => {      
+                      if(snapshot.val()){
+                              console.log(snapshot.val());
+                              if(snapshot.val().type == "user"){
+                                alert("You are not a Doctor");
+                                firebase.auth().signOut();       
+                              }
+                              else{
+                                this.router.navigate(['/home']);
+                              }
+                      }
+                      })
             }else{
                this.router.navigate(['/login']);
             }
@@ -20,5 +33,4 @@ export class AppComponent {
   }
 }
 
-
-
+  

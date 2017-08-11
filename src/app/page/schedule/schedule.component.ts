@@ -131,18 +131,19 @@ addTreatment(){
 				//pet_user:this.petuserid
 				appointment_userId:this.appointment_userId,
 				petname:this.petname,
-				mypetId:this.d_uid
-				
+				mypetId:this.d_uid	
 			}
-			let status="done";
-
+			
+			if(this.date == "" || this.purposeofvisit == ""||this.sickness == ""||this.treatment == "" || this.date == undefined || this.purposeofvisit == undefined ||this.sickness == undefined ||this.treatment == undefined){
+               alert("All Fields are Mandatory");
+			}else{
 			firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
-		//add sm========================
+
 			let fRef = firebase.database().ref('/users/' + this.userId+ '/myAppointment/'+ this.d_uid);
 			fRef.update({
 			status:"done"
 			});
-		//end===========================
+
 			let pRef = firebase.database().ref('pets');
 			pRef.once('value',(snapData:any)=>{
 				if(snapData.val()){
@@ -168,22 +169,13 @@ addTreatment(){
 				}
 			})
 
-
-	//	firebase.database().ref('pets/' + this.petuserid+ '/' + this.petid +'/pastconsultancy/').push(petData);
-
-	//	firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
-
-	//	let fRef = firebase.database().ref('appointment/' + this.petuserid);
-	//	fRef.update({
-	//			status:status
-	//		});
-
 		alert("Treatment Details added Successfully");
 		this.button ="false";
 		this.date="";
 		this.purposeofvisit="";
 		this.sickness="";
 		this.treatment="";
+			}
 
 }
 

@@ -36,7 +36,7 @@ export class LoginComponent {
 				
 			//	this.success="true";
 			//	localStorage.setItem("success",this.success)
-			var useId = firebase.auth().currentUser.uid;
+			/*var useId = firebase.auth().currentUser.uid;
   			 var ref = firebase.database().ref('/users/' + useId)
 				ref.on('value', (snapshot:any) => {      
 				if(snapshot.val()){
@@ -51,10 +51,10 @@ export class LoginComponent {
 				this.router.navigate(['/home']);
 			}
 
-				}
+				} 
 
 
-				})
+				})*/
 			}).catch((error)=>{
 				console.log(error);
 								
