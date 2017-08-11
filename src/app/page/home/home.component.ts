@@ -1,7 +1,7 @@
-import { Component,NgZone} from '@angular/core';
+import { Component,NgZone,ViewChild} from '@angular/core';
 import {Router,ActivatedRoute, Params, Data} from '@angular/router';
 import * as firebase from 'firebase';
-
+import {Popup} from 'ng2-opd-popup';
 
 @Component({
     moduleId: module.id,
@@ -12,6 +12,7 @@ import * as firebase from 'firebase';
 })
 
 export class HomeComponent {
+@ViewChild('popup5') popup5: Popup; 
 userId:any;
 allSchedule:any;
 reff:any;
@@ -23,7 +24,7 @@ treatmentstatus:boolean;
 filterItem:any;
 loginstatus:any;
 type:any;
-constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
+constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute,private popup:Popup){
 	//console.log("home working...")
 	this.appointments=[];
 	this.reff = firebase.database().ref('appointment/');
@@ -160,15 +161,22 @@ loadData(){
 	 });
 
   }
-
+openpopup(){
+	this.popup5.options = {
+			cancleBtnClass: "btn", 
+			confirmBtnClass: "btn btn-primary btn-mbe-attack",
+			color: "#2768d1",
+			header: "Choose Next follow up date",
+			widthProsentage:30,
+			animation: "fadeInDown",
+			confirmBtnContent: "Set it"}
+	this.popup5.show(this.popup5.options);
+}
 
 
 teatment(index){
 	let x =this.appointments[index];
   console.log(x);
-
-
-
 //appointment_userId
   //name
   //uid
@@ -183,6 +191,11 @@ teatment(index){
 	}
 
 }
+
+nextFollowup(index){
+this.openpopup();
+}
+
 
 logout(){
  firebase.auth().signOut();

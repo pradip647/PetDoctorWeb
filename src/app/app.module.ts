@@ -23,6 +23,7 @@ import { AppComponent } from './app.component';
 
 import * as firebase from 'firebase';
 
+import {PopupModule} from 'ng2-opd-popup';
 
   // Initialize Firebase
   var config = {
@@ -55,6 +56,7 @@ import * as firebase from 'firebase';
     HomeModule,
     SignupModule,
     ScheduleModule,
+    PopupModule.forRoot()
    
   
   ],
