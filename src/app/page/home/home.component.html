@@ -81,8 +81,12 @@
 <popup  #popup5 (confirmClick)="adduserDetails()">
           <form class="form-horizontal popup_from">
             <div>
-                <input format="dd/MM/yyyy" type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="nextfollowupdate" class="form-control" placeholder="Next followup Date" aria-describedby="basic-addon1">
+                <input format="dd/MM/yyyy" type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="nextfollowupdate" class="form-control" placeholder="Next followup Date" aria-describedby="basic-addon1" (change)="changeValue()">
             </div>
+              <select [(ngModel)]="selectedTime" (change)="changeOption()" [ngModelOptions]="{standalone: true}">
+                <option [ngValue]="Select">Select</option>
+                <option *ngFor="let c of docTime" [ngValue]="c">{{c}}</option>
+              </select>
         </form>      
   </popup>
 
