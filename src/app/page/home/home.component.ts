@@ -428,9 +428,9 @@ date:any;
           }
         })
 
-
+        this.popup5.hide();
     }
-      this.popup5.hide();
+     
     //console.log(this.appointments[this.catchindex]);
   }
 
