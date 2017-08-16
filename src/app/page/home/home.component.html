@@ -69,7 +69,7 @@
           <td>{{user.name}}</td>
           <td>{{user.selectPet}}</td>
           <td>{{user.additionalComments}}</td>
-          <td>{{user.phoneNo}} {{user.status}}</td>
+          <td>{{user.phoneNo}}</td>
           <td>
             <button  class="{{user.status ? 'btn btn-success' : 'btn btn-danger'}}" (click)="teatment(i)">{{user.status ? "Treatment Done" : "Treatment" }}</button>
            <!-- <button *ngIf="!user.status"  class="btn btn-info" (click)="nextFollowup(i)">Next follow up date</button>-->

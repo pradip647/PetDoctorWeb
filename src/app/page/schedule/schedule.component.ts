@@ -48,19 +48,37 @@ docRef:any;
 docTime:string;
 time:any;
 kuid:any;
+phoneno:any;
+prefdoctor:any;
+selectpet:any;
+username:any;
 constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute,private popup:Popup){
 this.treatmentslist=[];
 	
-	this.petuserid=this.route.snapshot.params['petuserid'] ;
-	this.date = this.route.snapshot.params['tdate'] ;
-	this.time = this.route.snapshot.params['time'] ;
+	
+	
 	//console.log(localStorage.getItem("time"));
 	//new added
+	this.additionalcomments = this.route.snapshot.params['acomments'] ;
 	this.appointment_userId = this.route.snapshot.params['appointment_userId'];
-	this.petname = this.route.snapshot.params['petname'];
-
+	this.date = this.route.snapshot.params['tdate'] ;
 	this.d_uid = this.route.snapshot.params['d_uid'];
+	this.petname = this.route.snapshot.params['petname'];
+	this.phoneno = this.route.snapshot.params['phoneno'];
+	this.prefdoctor = this.route.snapshot.params['prefferdoctor'];
+	this.selectpet = this.route.snapshot.params['selectpet'];
+	this.time = this.route.snapshot.params['time'] ;
+    this.username = this.route.snapshot.params['username'] ;
+
+
+    this.petuserid=this.route.snapshot.params['petuserid'] ;
 	this.kuid = this.route.snapshot.params['uid'];
+	
+	
+    
+
+
+
 	this.purposeofvisit = this.route.snapshot.params['acomments'];
 	
 	//end
@@ -264,7 +282,7 @@ catchindex:any;
             })
       }
   }
-
+  details:any;
   adduserDetails(){
 
     if(this.nextfollowupdate == undefined || this.nextfollowupdate==null || this.nextfollowupdate=="" ||
@@ -276,46 +294,65 @@ catchindex:any;
                 alert("Please Select Time");
             }
     }else{
+		this.details =[];
+let newappointment = {
+				additionalComments:this.additionalcomments,
+				appointment_userId:this.appointment_userId,
+				date:this.nextfollowupdate,
+				doctor_id:this.d_uid,
+				name:this.petname,
+				phoneNo:this.phoneno,
+				prefferDoctor:this.prefdoctor,
+				selectPet:this.selectpet,
+				time:this.selectedTime,
+				username:this.username,
+			}
 
+let petapp = {
+				additionalComments:this.additionalcomments,			
+				date:this.nextfollowupdate,
+				doctor_id:this.d_uid,
+				prefferDoctor:this.prefdoctor,
+		        time:this.selectedTime,	
+			}
 
-     // console.log(this.appointments[this.catchindex]);
-      var selectData = this.appointments[this.catchindex];
-      //user side modify date time
-      var auserRef = firebase.database().ref('users/' + this.appointment_userId + '/appointments/');
-      auserRef.once('value',(snap1:any)=>{
-          if(snap1.val()){
-			var appo = snap1.val();
-			console.log(appo);
-            for(let i=0; i<appo.length;i++){
-              if(appo[i].doctor_id == this.d_uid  && appo[i].name == this.petname  &&
-                 appo[i].date == this.date && appo[i].time == this.time){
-                    firebase.database().ref('users/' + this.appointment_userId + '/appointments/' + i + '/date/').set(this.nextfollowupdate);
-                    firebase.database().ref('users/' + this.appointment_userId + '/appointments/' + i + '/time/').set(this.selectedTime);
-              }
-            }
-          } 
-      })
-        //doctor side modification date time
-        this.zone.run(()=>{
-            firebase.database().ref('users/' + this.userId + '/myAppointment/' + this.kuid+ '/date/').set(this.nextfollowupdate);
-            firebase.database().ref('users/' + this.userId + '/myAppointment/' + this.kuid+ '/time/').set(this.selectedTime);
-        })
-        //doctor booking date and time
-        var d_ref = firebase.database().ref('users/' + this.userId + '/booking_times/');
-        d_ref.once('value',(snap2:any)=>{
-          if(snap2.val()){
-            var tData = snap2.val();
-            for (let key in tData){
-              if(tData[key].date == this.date && tData[key].time == this.time){
-                firebase.database().ref('users/' + this.userId + '/booking_times/' + key + '/date/').set(this.nextfollowupdate);
-                firebase.database().ref('users/' + this.userId + '/booking_times/' + key + '/time/').set(this.selectedTime);
-              }
+     //apointment to pet user
+		var uRef = firebase.database().ref('users/' + this.appointment_userId);
+        uRef.once('value',(appolist)=>{
+          if(appolist.val()){
+            if(appolist.val().appointments){
+              var allAppolist = appolist.val().appointments;
+              firebase.database().ref('users/' + this.appointment_userId + '/appointments/' + allAppolist.length).set(newappointment);
+            }else{
+                firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/appointments/0/').set(newappointment);
             }
           }
         })
 
+
+
+
+		//doctor side 
+		
+       this.zone.run(()=>{
+          
+		firebase.database().ref('users/' + this.userId + '/myAppointment').push(newappointment);
+		})
+        //doctor booking date and time
+	   var d_ref = firebase.database().ref('users/' + this.userId + '/booking_times/');
+	   let bookingtime ={ date:this.nextfollowupdate,
+						  time:this.selectedTime
+						}
+        d_ref.once('value',(snap2:any)=>{
+          if(snap2.val()){
+
+             firebase.database().ref('users/' + this.userId + '/booking_times' ).push(bookingtime);
+
+          }
+        })
+
         //pet's modification date and time
-        var p_ref = firebase.database().ref('pets/');
+       var p_ref = firebase.database().ref('pets/');
         p_ref.once('value',(snap3:any)=>{
           if(snap3.val()){
             console.log(snap3.val())
@@ -326,20 +363,32 @@ catchindex:any;
                   var p_reff = firebase.database().ref('pets/' + j + '/appointment/');
                   p_reff.once('value',(snap4:any)=>{
                     if(snap4.val()){
-                      let allAppo = snap4.val();
+                     /* let allAppo = snap4.val();
                       for(var key in allAppo){
                         console.log("enter here")
                         allAppo[key].uid = key;
                         if(allAppo[key].doctor_id == this.d_uid && allAppo[key].date == this.date && allAppo[key].time == this.time){
                           console.log("enter here again")
-                           firebase.database().ref('pets/' + j + '/appointment/'+ key + '/date/').set(this.nextfollowupdate);
+                           firebase.database().ref('pets/' + j + '/appointment').push(this.nextfollowupdate);
                           firebase.database().ref('pets/' + j + '/appointment/'+ key + '/time/').set(this.selectedTime);
                           break;
                         // console.log("succes id is : " + key);
                         }
-                      }
+					  }*/
+
+					  firebase.database().ref('pets/' + j + '/appointment').push(petapp);
                     }
-                  })
+				  })
+				var p_ref = firebase.database().ref('appointment/');
+				p_ref.once('value',(snap2:any)=>{
+				if(snap2.val()){
+
+				firebase.database().ref('appointment/').push(newappointment);
+
+				}
+				})
+
+
                   break;
               }
             }
