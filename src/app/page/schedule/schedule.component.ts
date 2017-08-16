@@ -1,7 +1,9 @@
-import { Component,NgZone } from '@angular/core';
+import { Component,NgZone,ViewChild } from '@angular/core';
 import {Router,ActivatedRoute, Params, Data} from '@angular/router';
 
 import * as firebase from 'firebase';
+
+import {Popup} from 'ng2-opd-popup';
 
 @Component({
     moduleId: module.id,
@@ -11,6 +13,7 @@ import * as firebase from 'firebase';
 })
 
 export class ScheduleComponent {
+@ViewChild('popup5') popup5: Popup; 	
 /*login:any;
 public fireAuth: any;
 myappo:any;
@@ -41,15 +44,23 @@ petname:any;
 additionalcomments:any;
 petsname:any;
 petlist:any;
-constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute){
+docRef:any;
+docTime:string;
+time:any;
+kuid:any;
+constructor(private router: Router, public zone:NgZone,public route: ActivatedRoute,private popup:Popup){
 this.treatmentslist=[];
 	
 	this.petuserid=this.route.snapshot.params['petuserid'] ;
+	this.date = this.route.snapshot.params['tdate'] ;
+	this.time = this.route.snapshot.params['time'] ;
+	//console.log(localStorage.getItem("time"));
 	//new added
 	this.appointment_userId = this.route.snapshot.params['appointment_userId'];
 	this.petname = this.route.snapshot.params['petname'];
 
 	this.d_uid = this.route.snapshot.params['d_uid'];
+	this.kuid = this.route.snapshot.params['uid'];
 	this.purposeofvisit = this.route.snapshot.params['acomments'];
 	
 	//end
@@ -59,9 +70,9 @@ this.treatmentslist=[];
 	}
 	
 	
-	
     this.appointments=[];
 	this.reff = firebase.database().ref('Appointment/');
+	this.docRef = firebase.database().ref('doctor_schedule');
 	firebase.auth().onAuthStateChanged((user) => {
 		if(user){
 			this.userId = user.uid;
@@ -80,6 +91,13 @@ this.treatmentslist=[];
 			this.router.navigate(['/login']);
 		}
 	});	
+
+	
+	this.docRef.once('value',(snapdata:any)=>{
+            if(snapdata.val()){
+                this.docTime = snapdata.val();
+            }
+        })
 
 }
 
@@ -139,7 +157,7 @@ addTreatment(){
 			}else{
 			firebase.database().ref('/users/' + this.userId+ '/treatment').push(petDatafordoctor);
 
-			let fRef = firebase.database().ref('/users/' + this.userId+ '/myAppointment/'+ this.d_uid);
+			let fRef = firebase.database().ref('/users/' + this.userId+ '/myAppointment/'+ this.kuid);
 			fRef.update({
 			status:"done"
 			});
@@ -179,13 +197,159 @@ addTreatment(){
 
 }
 
-
-
-
 logout(){
  firebase.auth().signOut();
 }
 
+ nextfollowupdate:any;
+ //date:any;
+ selectedTime:any;
 
+
+ openpopup(){
+      this.popup5.options = {
+          cancleBtnClass: "btn", 
+          confirmBtnClass: "btn btn-primary btn-mbe-attack",
+          color: "#2768d1",
+          header: "Choose Next follow up date",
+          widthProsentage:30,
+          animation: "fadeInDown",
+          confirmBtnContent: "Set it"}
+      this.popup5.show(this.popup5.options);
+    }
+
+catchindex:any;
+
+ changeValue(){
+    console.log(this.nextfollowupdate);
+    this.changeOption();
+  }
+
+  nextFollowup(){
+   // this.catchindex = index;
+    this.nextfollowupdate = /*this.appointments[index].date;*/this.date;
+    // console.log(index);
+    // console.log(this.appointments[index]);
+      this.openpopup();
+  }
+
+
+   changeOption(){
+      console.log(this.selectedTime);
+      console.log(this.nextfollowupdate);
+      if(this.nextfollowupdate == undefined || this.nextfollowupdate==null || this.nextfollowupdate==""){
+          alert("Please Select Follow up Date First.");
+      }else if(this.selectedTime == undefined || this.selectedTime == "" || this.selectedTime==null || this.selectedTime == "Select"){
+          alert("Please Select Follow up Time.");
+      }else{
+        let dRef = firebase.database().ref('users/' + this.userId + "/booking_times/");
+            dRef.once('value',(snapshot:any)=>{
+              if(snapshot.val()){
+                  let allBookingTime = snapshot.val();
+                  let found=false
+                  for( let key in allBookingTime){
+                    if(allBookingTime[key].date == this.nextfollowupdate && allBookingTime[key].time == this.selectedTime){
+                        found=true;
+                        break;
+                    }
+                  }
+
+                  if(found){
+                    alert("Your Booking Schedule Already Booked on this time. Please Select Another Time or Date");
+                    this.selectedTime = "Select";
+                  }else{
+                    //alert("not book. free")
+                  }
+              }
+            })
+      }
+  }
+
+  adduserDetails(){
+
+    if(this.nextfollowupdate == undefined || this.nextfollowupdate==null || this.nextfollowupdate=="" ||
+       this.selectedTime == undefined || this.selectedTime == "" || this.selectedTime==null || this.selectedTime == "Select"){
+
+            if(this.nextfollowupdate == undefined || this.nextfollowupdate==null || this.nextfollowupdate==""){
+                alert("Please Select Date");
+            }else if(this.selectedTime == undefined || this.selectedTime == "" || this.selectedTime==null || this.selectedTime == "Select"){
+                alert("Please Select Time");
+            }
+    }else{
+
+
+     // console.log(this.appointments[this.catchindex]);
+      var selectData = this.appointments[this.catchindex];
+      //user side modify date time
+      var auserRef = firebase.database().ref('users/' + this.appointment_userId + '/appointments/');
+      auserRef.once('value',(snap1:any)=>{
+          if(snap1.val()){
+			var appo = snap1.val();
+			console.log(appo);
+            for(let i=0; i<appo.length;i++){
+              if(appo[i].doctor_id == this.d_uid  && appo[i].name == this.petname  &&
+                 appo[i].date == this.date && appo[i].time == this.time){
+                    firebase.database().ref('users/' + this.appointment_userId + '/appointments/' + i + '/date/').set(this.nextfollowupdate);
+                    firebase.database().ref('users/' + this.appointment_userId + '/appointments/' + i + '/time/').set(this.selectedTime);
+              }
+            }
+          } 
+      })
+        //doctor side modification date time
+        this.zone.run(()=>{
+            firebase.database().ref('users/' + this.userId + '/myAppointment/' + this.kuid+ '/date/').set(this.nextfollowupdate);
+            firebase.database().ref('users/' + this.userId + '/myAppointment/' + this.kuid+ '/time/').set(this.selectedTime);
+        })
+        //doctor booking date and time
+        var d_ref = firebase.database().ref('users/' + this.userId + '/booking_times/');
+        d_ref.once('value',(snap2:any)=>{
+          if(snap2.val()){
+            var tData = snap2.val();
+            for (let key in tData){
+              if(tData[key].date == this.date && tData[key].time == this.time){
+                firebase.database().ref('users/' + this.userId + '/booking_times/' + key + '/date/').set(this.nextfollowupdate);
+                firebase.database().ref('users/' + this.userId + '/booking_times/' + key + '/time/').set(this.selectedTime);
+              }
+            }
+          }
+        })
+
+        //pet's modification date and time
+        var p_ref = firebase.database().ref('pets/');
+        p_ref.once('value',(snap3:any)=>{
+          if(snap3.val()){
+            console.log(snap3.val())
+            let petdetails = snap3.val();
+            for(let j=0; j<petdetails.length; j++){
+              if(petdetails[j].name == this.petname && petdetails[j].userId == this.appointment_userId){
+
+                  var p_reff = firebase.database().ref('pets/' + j + '/appointment/');
+                  p_reff.once('value',(snap4:any)=>{
+                    if(snap4.val()){
+                      let allAppo = snap4.val();
+                      for(var key in allAppo){
+                        console.log("enter here")
+                        allAppo[key].uid = key;
+                        if(allAppo[key].doctor_id == this.d_uid && allAppo[key].date == this.date && allAppo[key].time == this.time){
+                          console.log("enter here again")
+                           firebase.database().ref('pets/' + j + '/appointment/'+ key + '/date/').set(this.nextfollowupdate);
+                          firebase.database().ref('pets/' + j + '/appointment/'+ key + '/time/').set(this.selectedTime);
+                          break;
+                        // console.log("succes id is : " + key);
+                        }
+                      }
+                    }
+                  })
+                  break;
+              }
+            }
+          }
+        })
+
+        this.popup5.hide();
+    }
+     
+    //console.log(this.appointments[this.catchindex]);
+  }
 
 }
