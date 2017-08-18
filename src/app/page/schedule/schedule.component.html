@@ -61,8 +61,9 @@
       <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="sickness"  class="form-control" placeholder="Sickness" aria-describedby="basic-addon1" [disabled]='status'></td>
       <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="treatment" class="form-control" placeholder="Treatment" aria-describedby="basic-addon1" [disabled]='status'></td>  
       <td>
-        <button type="button" class="btn btn-success" (click)="addTreatment()" [disabled]='status'>Update</button>
-        <button type="button" class="btn btn-info" (click)="nextFollowup(i)">Next follow up date</button>
+        <button type="button" class="btn btn-success" (click)="addTreatment()" [disabled]='status ||!treatment || !sickness'>Update</button>
+       <span [hidden]='status'> <button type="button" class="btn btn-info" (click)="nextFollowup(i)" [disabled]='!treatment || !sickness' >Next follow up date</button></span>
+        <span [hidden]='!status'><button type="button" class="btn btn-info" (click)="nextFollowup(i)" >Next follow up date</button></span>
       </td>
     </tr>
 

@@ -56,7 +56,6 @@ constructor(private router: Router, public zone:NgZone,public route: ActivatedRo
 this.treatmentslist=[];
 	
 	
-	
 	//console.log(localStorage.getItem("time"));
 	//new added
 	this.additionalcomments = this.route.snapshot.params['acomments'] ;
@@ -70,14 +69,8 @@ this.treatmentslist=[];
 	this.time = this.route.snapshot.params['time'] ;
     this.username = this.route.snapshot.params['username'] ;
 
-
     this.petuserid=this.route.snapshot.params['petuserid'] ;
 	this.kuid = this.route.snapshot.params['uid'];
-	
-	
-    
-
-
 
 	this.purposeofvisit = this.route.snapshot.params['acomments'];
 	
@@ -204,13 +197,14 @@ addTreatment(){
 					}
 				}
 			})
-
+       
 		alert("Treatment Details added Successfully");
 		this.button ="false";
 		this.date="";
 		this.purposeofvisit="";
 		this.sickness="";
 		this.treatment="";
+		this.router.navigate(['/home']);
 			}
 
 }
@@ -244,10 +238,9 @@ catchindex:any;
   }
 
   nextFollowup(){
-   // this.catchindex = index;
-    this.nextfollowupdate = /*this.appointments[index].date;*/this.date;
-    // console.log(index);
-    // console.log(this.appointments[index]);
+ 
+    this.nextfollowupdate =this.date;
+
       this.openpopup();
   }
 
@@ -330,8 +323,6 @@ let petapp = {
         })
 
 
-
-
 		//doctor side 
 		
        this.zone.run(()=>{
@@ -363,19 +354,6 @@ let petapp = {
                   var p_reff = firebase.database().ref('pets/' + j + '/appointment/');
                   p_reff.once('value',(snap4:any)=>{
                     if(snap4.val()){
-                     /* let allAppo = snap4.val();
-                      for(var key in allAppo){
-                        console.log("enter here")
-                        allAppo[key].uid = key;
-                        if(allAppo[key].doctor_id == this.d_uid && allAppo[key].date == this.date && allAppo[key].time == this.time){
-                          console.log("enter here again")
-                           firebase.database().ref('pets/' + j + '/appointment').push(this.nextfollowupdate);
-                          firebase.database().ref('pets/' + j + '/appointment/'+ key + '/time/').set(this.selectedTime);
-                          break;
-                        // console.log("succes id is : " + key);
-                        }
-					  }*/
-
 					  firebase.database().ref('pets/' + j + '/appointment').push(petapp);
                     }
 				  })
@@ -388,17 +366,17 @@ let petapp = {
 				}
 				})
 
-
                   break;
               }
             }
           }
         })
 
-        this.popup5.hide();
+		this.popup5.hide();
+		
     }
      
-    //console.log(this.appointments[this.catchindex]);
+    
   }
 
 }
