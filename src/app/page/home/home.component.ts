@@ -162,7 +162,7 @@ docTime:any;
   }
 
 
-    openpopup(){
+   /* openpopup(){
       this.popup5.options = {
           cancleBtnClass: "btn", 
           confirmBtnClass: "btn btn-primary btn-mbe-attack",
@@ -172,7 +172,7 @@ docTime:any;
           animation: "fadeInDown",
           confirmBtnContent: "Set it"}
       this.popup5.show(this.popup5.options);
-    }
+    }*/
 
 
 teatment(index){
@@ -181,13 +181,15 @@ teatment(index){
 //appointment_userId
   //name
   //uid
+ // localStorage.setItem("time" , x.time);
+  
 	if(x.status){
    // this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid,status:x.status}]);
-    this.router.navigate(['/schedule',{status:x.status, appointment_userId:x.appointment_userId,petname:x.name, d_uid:x.uid ,acomments:x.additionalComments}]);
+    this.router.navigate(['/schedule',{status:x.status,appointment_userId:x.appointment_userId,phoneno:x.phoneNo,prefferdoctor:x.prefferDoctor,selectpet:x.selectPet,username:x.username,petname:x.name,d_uid:x.doctor_id,uid:x.uid,acomments:x.additionalComments,tdate:x.date,time:x.time}]);
 	}
 	else{
   //this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid}]);
-  this.router.navigate(['/schedule',{appointment_userId:x.appointment_userId,petname:x.name, d_uid:x.uid ,acomments:x.additionalComments}]);
+  this.router.navigate(['/schedule',{appointment_userId:x.appointment_userId,phoneno:x.phoneNo,prefferdoctor:x.prefferDoctor,selectpet:x.selectPet,username:x.username,petname:x.name,d_uid:x.doctor_id,uid:x.uid,acomments:x.additionalComments,tdate:x.date,time:x.time}]);
   //localStorage.setItem("additionalcomments",x.additionalComments);
 	}
 
@@ -293,12 +295,12 @@ date:any;
       }
   }
 
-  catchindex:any;
+ /* catchindex:any;
   nextFollowup(index){
     this.catchindex = index;
     this.nextfollowupdate = this.appointments[index].date;
-    // console.log(index);
-    // console.log(this.appointments[index]);
+     console.log(index);
+     console.log(this.appointments[index]);
       this.openpopup();
   }
 
@@ -432,7 +434,7 @@ date:any;
     }
      
     //console.log(this.appointments[this.catchindex]);
-  }
+  }*/
 
 
 }

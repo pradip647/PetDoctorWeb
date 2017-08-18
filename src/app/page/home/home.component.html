@@ -69,15 +69,15 @@
           <td>{{user.name}}</td>
           <td>{{user.selectPet}}</td>
           <td>{{user.additionalComments}}</td>
-          <td>{{user.phoneNo}} {{user.status}}</td>
+          <td>{{user.phoneNo}}</td>
           <td>
             <button  class="{{user.status ? 'btn btn-success' : 'btn btn-danger'}}" (click)="teatment(i)">{{user.status ? "Treatment Done" : "Treatment" }}</button>
-            <button *ngIf="!user.status"  class="btn btn-info" (click)="nextFollowup(i)">Next follow up date</button>
+           <!-- <button *ngIf="!user.status"  class="btn btn-info" (click)="nextFollowup(i)">Next follow up date</button>-->
           </td>
         </tr>
     </table>
 </div>
-
+<!--
 <popup  #popup5 (confirmClick)="adduserDetails()">
           <form class="form-horizontal popup_from">
             <div>
@@ -89,4 +89,5 @@
               </select>
         </form>      
   </popup>
+    -->
 

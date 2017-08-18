@@ -14,7 +14,7 @@ export class AppComponent {
             if(user){      
               var useId = firebase.auth().currentUser.uid;
                       var ref = firebase.database().ref('/users/' + useId)
-                      ref.on('value', (snapshot:any) => {      
+                      ref.once('value', (snapshot:any) => {      
                       if(snapshot.val()){
                               console.log(snapshot.val());
                               if(snapshot.val().type == "user"){
