@@ -26,13 +26,22 @@ import * as firebase from 'firebase';
 import {PopupModule} from 'ng2-opd-popup';
 
   // Initialize Firebase
+  // var config = {
+  //   apiKey: "AIzaSyA0RNVuWNJcvqEZAqwudFcVeqxbT2Vp-KI",
+  //   authDomain: "bookyourvet-6ab87.firebaseapp.com",
+  //   databaseURL: "https://bookyourvet-6ab87.firebaseio.com",
+  //   projectId: "bookyourvet-6ab87",
+  //   storageBucket: "bookyourvet-6ab87.appspot.com",
+  //   messagingSenderId: "416942615461"
+  // };
+  // firebase.initializeApp(config);
   var config = {
-    apiKey: "AIzaSyA0RNVuWNJcvqEZAqwudFcVeqxbT2Vp-KI",
-    authDomain: "bookyourvet-6ab87.firebaseapp.com",
-    databaseURL: "https://bookyourvet-6ab87.firebaseio.com",
-    projectId: "bookyourvet-6ab87",
-    storageBucket: "bookyourvet-6ab87.appspot.com",
-    messagingSenderId: "416942615461"
+    apiKey: "AIzaSyAVmrAnSfnYJb2nAlhlxQo6rKm7oEUL7s4",
+    authDomain: "doctorapp-539e5.firebaseapp.com",
+    databaseURL: "https://doctorapp-539e5.firebaseio.com",
+    projectId: "doctorapp-539e5",
+    storageBucket: "doctorapp-539e5.appspot.com",
+    messagingSenderId: "955540918554"
   };
   firebase.initializeApp(config);
 

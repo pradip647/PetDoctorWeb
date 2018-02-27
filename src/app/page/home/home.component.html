@@ -58,18 +58,21 @@
           <th>Client Name</th>
           <th>Pet Name</th>
           <th>Species</th>
-          <th>Problem</th>
+          <th>Diseases</th>
           <th>Contact No</th>
+          <!-- <th>Additional Comments</th> -->
           <th>Action</th>
       </tr>
       <tr *ngFor= "let user of appointments; let i = index;">
           <td>{{i+1}}</td>
           <td>{{user.date+","+ user.time}}</td>
-          <td>{{user.username}}</td>
-          <td>{{user.name}}</td>
-          <td>{{user.selectPet}}</td>
-          <td>{{user.additionalComments}}</td>
-          <td>{{user.phoneNo}}</td>
+          <!-- <td>{{user.username}}</td> -->
+          <td>{{user.ownerUsername}}</td>
+          <td>{{user.petname}}</td>
+          <td>{{user.species}}</td>
+          <td>{{user.diseases}}</td>
+          <td>{{user.ownerContact}}</td>
+          <!-- <td>{{user.comment}}</td> -->
           <td>
             <button  class="{{user.status ? 'btn btn-success' : 'btn btn-danger'}}" (click)="teatment(i)">{{user.status ? "Treatment Done" : "Treatment" }}</button>
            <!-- <button *ngIf="!user.status"  class="btn btn-info" (click)="nextFollowup(i)">Next follow up date</button>-->

@@ -185,11 +185,74 @@ teatment(index){
   
 	if(x.status){
    // this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid,status:x.status}]);
-    this.router.navigate(['/schedule',{status:x.status,appointment_userId:x.appointment_userId,phoneno:x.phoneNo,prefferdoctor:x.prefferDoctor,selectpet:x.selectPet,username:x.username,petname:x.name,d_uid:x.doctor_id,uid:x.uid,acomments:x.additionalComments,tdate:x.date,time:x.time}]);
+    this.router.navigate(['/schedule',{
+      // status:x.status,
+      // appointment_userId:x.appointment_userId,
+      // phoneno:x.phoneNo,
+      // prefferdoctor:x.prefferDoctor,
+      // selectpet:x.selectPet,
+      // username:x.username,
+      // petname:x.name,
+      // d_uid:x.doctor_id,
+      // uid:x.uid,
+      // acomments:x.additionalComments,
+      // tdate:x.date,
+      // time:x.time
+      appointment_userId:x.ownerUid,
+      phoneno:x.ownerContact,
+      prefferdoctor:x.doctor,
+      selectpet:x.species,
+      username:x.ownerUsername,
+      petname:x.petname,
+      d_uid:x.doctor,
+      uid:x.uid,
+      petId:x.selectPet,
+      acomments:x.comment,
+      tdate:x.date,
+      time:x.time,
+      diseases:x.diseases,
+      showTable:false,
+      status:x.status,
+      breed:x.breed
+    
+    }]);
 	}
 	else{
   //this.router.navigate(['/schedule',{petuserid:x.uid,petid:x.petid}]);
-  this.router.navigate(['/schedule',{appointment_userId:x.appointment_userId,phoneno:x.phoneNo,prefferdoctor:x.prefferDoctor,selectpet:x.selectPet,username:x.username,petname:x.name,d_uid:x.doctor_id,uid:x.uid,acomments:x.additionalComments,tdate:x.date,time:x.time}]);
+  
+  // this.router.navigate(['/schedule',{appointment_userId:x.appointment_userId,
+  //   phoneno:x.phoneNo,
+  //   prefferdoctor:x.prefferDoctor,
+  //   selectpet:x.selectPet,
+  //   username:x.username,
+  //   petname:x.name,
+  //   d_uid:x.doctor_id,
+  //   uid:x.uid,
+  //   acomments:x.additionalComments,
+  //   tdate:x.date,
+  //   time:x.time}]);
+
+
+this.router.navigate(['/schedule',{
+  appointment_userId:x.ownerUid,
+  phoneno:x.ownerContact,
+  prefferdoctor:x.doctor,
+  selectpet:x.species,
+  username:x.ownerUsername,
+  petname:x.petname,
+  d_uid:x.doctor,
+  uid:x.uid,
+  petId:x.selectPet,
+  acomments:x.comment,
+  tdate:x.date,
+  time:x.time,
+  diseases:x.diseases
+
+}])
+
+
+
+
   //localStorage.setItem("additionalcomments",x.additionalComments);
 	}
 

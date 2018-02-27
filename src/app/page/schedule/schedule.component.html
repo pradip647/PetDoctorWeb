@@ -25,38 +25,45 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
 <div class="panel panel-default" style="margin-bottom:0px;">
 <table class="table">
   <thead class="thead-inverse">
     <tr>
-      <th class="heading1" colspan="6">Treatment List</th>
+      <th class="heading1" colspan="6">Patient Details</th>
     </tr>
     <tr>
-      <th>No</th>
       <th>Appointment Date</th>
-      <th>Purpose of visit</th>
-      <th>Sickness</th>
-      <th>Treatment</th>
+      <th>Pet Name</th>
+      <th>Species</th>
+      <th>Diseases</th>
+      <th>Pet Owner Name</th>
+      <th>Contact</th>
+      <th>Additional Comments</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor= "let treatment of treatmentslist; let i = index;">
-      <td>{{i+1}}</td>
-      <td>{{treatment.pet_treatment_date}}</td>
-      <td>{{treatment.visitreason}}</td>
-      <td>{{treatment.pet_problem}}</td>
-      <td>{{treatment.pet_treatment}}</td>    
+    <tr >
+      <td>{{date ? date : ''}}</td>
+      <td>{{petname ? petname :''}}</td>
+      <td>{{selectpet ? selectpet : ''}}</td>
+      <td>{{diseases ? diseases : ''}}</td> 
+      <td>{{username ? username :''}}</td> 
+      <td>{{phoneno ? phoneno : ''}}</td>    
+      <td>{{purposeofvisit ? purposeofvisit : ''}}</td>   
     </tr>
      
   </tbody>
 </table>
 </div>
 
+
+
+
 <div class="panel panel-default" >
 <table class="table">
  <tr>
-      <!--<td><input format="dd/MM/yyyy" type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="date" class="form-control" placeholder="Appointment Date" aria-describedby="basic-addon1"></td>-->
-      <td ><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="date" class="form-control" aria-describedby="basic-addon1" readonly></td>
+      <td ><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="date" class="form-control" aria-describedby="basic-addon1" readonly [disabled]='status'></td>
       <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="purposeofvisit" class="form-control" placeholder="Purpose of visit" aria-describedby="basic-addon1" [disabled]='status'></td>
       <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="sickness"  class="form-control" placeholder="Sickness" aria-describedby="basic-addon1" [disabled]='status'></td>
       <td><input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="treatment" class="form-control" placeholder="Treatment" aria-describedby="basic-addon1" [disabled]='status'></td>  
@@ -79,7 +86,7 @@
             </div>
               <select [(ngModel)]="selectedTime" (change)="changeOption()" [ngModelOptions]="{standalone: true}">
                 <option [ngValue]="Select">Select</option>
-                <option *ngFor="let c of docTime" [ngValue]="c">{{c}}</option>
+                <option *ngFor="let c of appoTime" [ngValue]="c.val">{{c.lebel}}</option>
               </select>
         </form>      
   </popup>
